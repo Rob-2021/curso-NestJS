@@ -1,0 +1,52 @@
+import { Controller, Get, Param, Post } from '@nestjs/common';
+import { AppService } from './app.service';
+
+@Controller()
+export class AppController {
+  constructor(private readonly appService: AppService) { }
+
+  @Get()
+  getHello(): string {
+    //return this.appService.getHello();
+    return 'clases de nestjs';
+  }
+
+  @Get('nuevo')
+  getProducts(): string {
+    return 'Nuevos Productos';
+  }
+
+  @Get('Categories')
+  getCategories(): string {
+    return 'Nuevas Categorias del Mercado';
+  }
+
+  // users/{id}
+  // @Get('users/:id')
+  // getUser(@Param() params:any): string {
+  //   return `Es el usuario: ${params.id}`;
+  // }
+
+  @Get('users/:userId')
+  getUser(@Param() params: any): string {
+    return `Es el usuario: ${params.userId}`;
+  }
+
+  @Get('products/:id')
+  getProduct(@Param('id') id: string) {
+    return `Es el producto: ${id}`;
+  }
+
+  // Recibiendo dos parametros
+  // @Get('categories/:id/products/:productId')
+  // getCategory(@Param() params:any) {
+  //   return `Es la categoria: ${params.id} y el producto: ${params.productId}`;
+  // }
+
+  @Get('categories/:id/products/:productId')
+  getCategory(@Param('productID') productId: string,
+    @Param('id') id: string) {
+    return `Es la categoria: ${id} y el producto: ${productId}`;
+  }
+
+}
