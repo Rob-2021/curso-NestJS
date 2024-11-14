@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ParseIntPipe } from '@nestjs/common';
 import { Product } from './entities/product.entity';
 
 @Injectable()
 export class ProductsService {
 
     private counterId = 1;
-    private products:Product[] = [
+    private products: Product[] = [
         {
             id: 1,
             name: 'Producto 1',
@@ -16,17 +16,17 @@ export class ProductsService {
     ]
 
     //metodo para encontrar todos los productos
-    findAll(){
+    findAll() {
         return this.products;
     }
 
     //metodo para encontrar un producto
-    findOne(id:number){
+    findOne(id: number) {
         return this.products.find((item) => item.id === id);
     }
 
     //metodo para crear un producto
-    create(payload:any){
+    create(payload: any) {
         this.counterId = this.counterId + 1;
 
         const newProduct = {
@@ -37,32 +37,13 @@ export class ProductsService {
         return newProduct;
     }
 
-    // //metodo para actualizar un producto
-    // update(id:number, payload:any){
-    //     const index = this.products.findIndex((item) => item.id === id);
-    //     if(index === -1){
-    //         return null;
-    //     }
-    //     this.products[index] = {
-    //         ...this.products[index],
-    //         ...payload
-    //     };
-    //     return this.products[index];
-    // }
-
-    // //metodo para eliminar un producto
-    // delete(id:number){
-    //     const index = this.products.findIndex((item) => item.id === id);
-    //     if(index === -1){
-    //         return null;
-    //     }
-    //     const product = this.products[index];
-    //     this.products = this.products.filter((item) => item.id !== id);
-    //     return product;
-    // }
-
+    // Método para actualizar un producto
     update(id: number, payload: any) {
-        const index = this.products.findIndex((item) => item.id === id);
+        const productId = typeof id === 'string' ? parseInt(id, 10) : id;
+        const index = this.products.findIndex((item) => item.id === productId);
+        // console.log('id', id, 'payload', payload);
+        // const index = this.products.findIndex((item) => item.id == id);
+        // console.log('index', index);
         if (index === -1) {
             throw new Error(`Product con id ${id} no encontrado`);
         }
@@ -72,15 +53,17 @@ export class ProductsService {
         };
         return this.products[index];
     }
-    
+
     // Método para eliminar un producto
     delete(id: number) {
-        const index = this.products.findIndex((item) => item.id === id);
+        const productId = typeof id === 'string' ? parseInt(id, 10) : id;
+        const index = this.products.findIndex((item) => item.id === productId);
+        // const index = this.products.findIndex((item) => item.id == id);
         if (index === -1) {
             throw new Error(`Product con id ${id} no encontrado`);
         }
         const product = this.products[index];
-        this.products = this.products.filter((item) => item.id !== id);
+        this.products = this.products.filter((item) => item.id !== productId);
         return product;
     }
 }
