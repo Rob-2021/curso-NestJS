@@ -1,4 +1,4 @@
-import { Injectable, ParseIntPipe } from '@nestjs/common';
+import { Injectable, NotFoundException, ParseIntPipe } from '@nestjs/common';
 import { Product } from './entities/product.entity';
 
 @Injectable()
@@ -22,7 +22,12 @@ export class ProductsService {
 
     //metodo para encontrar un producto
     findOne(id: number) {
-        return this.products.find((item) => item.id === id);
+        const product = this.products.find((item) => item.id === id);
+        if (!product) {
+            //throw new Error(`Product con id ${id} no encontrado`);
+            throw new NotFoundException(`Product con id ${id} no encontrado`);
+        }
+        return product;
     }
 
     //metodo para crear un producto

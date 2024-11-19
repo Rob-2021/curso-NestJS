@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { ProductsService } from './products.service';
 
 @Controller('products')
@@ -17,8 +17,8 @@ export class ProductsController {
     // /products/:id
     //retorna un producto
     @Get(':id')
-    findOne(@Param('id') id:string) {
-        return this.productsService.findOne(Number(id));
+    findOne(@Param('id', ParseIntPipe) id:number) {
+        return this.productsService.findOne(id);
     }
 
     //ruta para crear
@@ -29,13 +29,13 @@ export class ProductsController {
 
     //actualizar
     @Put(':id')
-    update(@Param('id') id:number, @Body() payload:any){
+    update(@Param('id', ParseIntPipe) id:number, @Body() payload:any){
         return this.productsService.update(id, payload);
     }
 
     //eliminar
     @Delete(':id')
-    delete(@Param('id') id:number){
+    delete(@Param('id', ParseIntPipe) id:number){
         return this.productsService.delete(id);
     }
 }
