@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { ProductsService } from './products.service';
+import { CreateProductDto, UpdateProductDto } from './dto/products.dtos';
 
 @Controller('products')
 export class ProductsController {
@@ -23,13 +24,13 @@ export class ProductsController {
 
     //ruta para crear
     @Post()
-    create(@Body() payload: any) {
+    create(@Body() payload: CreateProductDto) {
         return this.productsService.create(payload);
     }
 
     //actualizar
     @Put(':id')
-    update(@Param('id', ParseIntPipe) id:number, @Body() payload:any){
+    update(@Param('id', ParseIntPipe) id:number, @Body() payload:UpdateProductDto){
         return this.productsService.update(id, payload);
     }
 

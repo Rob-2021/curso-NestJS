@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, ParseIntPipe } from '@nestjs/common';
 import { Product } from './entities/product.entity';
+import { CreateProductDto, UpdateProductDto } from './dto/products.dtos';
 
 @Injectable()
 export class ProductsService {
@@ -31,7 +32,7 @@ export class ProductsService {
     }
 
     //metodo para crear un producto
-    create(payload: any) {
+    create(payload: CreateProductDto) {
         this.counterId = this.counterId + 1;
 
         const newProduct = {
@@ -43,7 +44,7 @@ export class ProductsService {
     }
 
     // Método para actualizar un producto
-    update(id: number, payload: any) {
+    update(id: number, payload: UpdateProductDto) {
         const productId = typeof id === 'string' ? parseInt(id, 10) : id;
         const index = this.products.findIndex((item) => item.id === productId);
         // console.log('id', id, 'payload', payload);
